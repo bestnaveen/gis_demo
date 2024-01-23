@@ -32,6 +32,9 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   TextEditingController assetIdController = TextEditingController();
   TextEditingController qrValueController = TextEditingController();
+  TextEditingController longitudeController = TextEditingController();
+  TextEditingController latitudeController = TextEditingController();
+  TextEditingController altitudeController = TextEditingController();
   String? latitude = '', longitude = '', altitude = '';
 
   @override
@@ -57,39 +60,54 @@ class _MyHomePageState extends State<MyHomePage> {
               TextField(
                 controller: assetIdController,
                 decoration: const InputDecoration(
+                  label: Text("AssetId"),
                   hintText: 'Asset Id',
                 ),
               ),
               const SizedBox(height: 10),
               TextField(
                 controller: qrValueController,
-                decoration: const InputDecoration(
+                decoration:  InputDecoration(
+                  label: Text("QR Code"),
                   hintText: 'Scanned QR value',
+                  suffixIcon: IconButton(onPressed: (){
+                    _startScanner();
+                  }, icon: Icon(Icons.qr_code)),
                 ),
               ),
               const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  _startScanner();
-                },
-                child: const Text('QR CODE DATA'),
+              TextField(
+                controller: longitudeController,
+                decoration:  InputDecoration(
+                  hintText: 'Geo Location',
+                  label: Text("Longitude"),
+                  suffixIcon: IconButton(onPressed: (){
+                    locationPermission();
+                  }, icon: Icon(Icons.place_outlined)),
+                ),
               ),
+              if(longitudeController.text!=''&& latitudeController.text!=''&& altitudeController.text!='')TextField(
+                controller: latitudeController,
+                decoration:  InputDecoration(
+                  hintText: 'Scanned QR value',
+                    label: Text("Latitude"),
+                  suffixIcon: IconButton(onPressed: (){
+
+                  }, icon: Icon(Icons.place_outlined)),
+                ),
+              ),
+              if(longitudeController.text!=''&& latitudeController.text!=''&& altitudeController.text!='') TextField(
+                controller: altitudeController,
+                decoration:  InputDecoration(
+                  hintText: 'Scanned QR value',
+                    label: Text("Altitude"),
+                  suffixIcon: IconButton(onPressed: (){
+                  }, icon: Icon(Icons.place_outlined)),
+                ),
+              ),
+
               SizedBox(
-                height: 10,
-              ),
-              if (latitude == '' && longitude == '')
-                const Text(
-                    'Click on the Fetch location button to get Geolocation'),
-              ElevatedButton(
-                onPressed: () {
-                  locationPermission();
-                },
-                child: const Text('Fetch GeoLocation'),
-              ),
-              if (latitude != '') Text('Latitude: $latitude'),
-              if (longitude != '') Text('Longitude: $longitude'),
-              SizedBox(
-                height: 30,
+                height: 50,
               ),
               ElevatedButton(
                 onPressed: () {
@@ -175,9 +193,9 @@ class _MyHomePageState extends State<MyHomePage> {
   getCoordinates() async {
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
-    latitude = position.latitude.toString() ?? '';
-    longitude = position.longitude.toString() ?? '';
-    altitude = position.altitude.toString() ?? '';
+    latitudeController.text = position.latitude.toString() ?? '';
+    longitudeController.text = position.longitude.toString() ?? '';
+    altitudeController.text = position.altitude.toString() ?? '';
     setState(() {});
   }
 
@@ -223,12 +241,14 @@ class _MyHomePageState extends State<MyHomePage> {
     if (response.statusCode == 200) {
       print("Request successful");
       print(response.body);
-      await Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => SubmitPayloadScreen(jsonEncode(payload),jsonDecode(response.body)),
-        ),
-      );
+
+      // await Navigator.push(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) => SubmitPayloadScreen(jsonEncode(payload),jsonDecode(response.body)),
+      //   ),
+      // );
+      showSuccessDialog(jsonDecode(response.body));
     } else {
       print("Request failed with status: ${response.statusCode}");
       print(response.body);
@@ -237,5 +257,28 @@ class _MyHomePageState extends State<MyHomePage> {
     print("Error: $e");
   }
 
+  }
+
+  showSuccessDialog(dynamic res){
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30),
+            ),
+            title: const Text("Success!!"),
+            content:  Text(res),
+            actions: <Widget>[
+              MaterialButton(
+                child: const Text("OK"),
+                onPressed: () async {
+                  Navigator.pop(context);
+                  Geolocator.openLocationSettings();
+                },
+              ),
+            ],
+          );
+        });
   }
 }
