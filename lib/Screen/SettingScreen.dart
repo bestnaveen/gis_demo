@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../Provider/SettingProvider.dart';
 import '../main.dart';
 
 class SettingScreen extends StatelessWidget {
