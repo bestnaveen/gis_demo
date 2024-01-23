@@ -4,11 +4,28 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
+import 'package:poc_demo/Screen/SettingScreen.dart';
 import 'package:poc_demo/Screen/SubmitPayloadScreen.dart';
 import 'Screen/QrScannerScreen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => SettingScreenProvider(),
+      child: const MyApp(),
+    ),
+  );
+}
+
+
+class SettingScreenProvider with ChangeNotifier {
+  TextEditingController assetIdController = TextEditingController();
+  TextEditingController qrValueController = TextEditingController();
+  TextEditingController projectIdController = TextEditingController();
+  TextEditingController projectCodeController = TextEditingController();
+  TextEditingController featureIDController = TextEditingController();
+  TextEditingController isChainageBasisController = TextEditingController();
+  TextEditingController companyIdController = TextEditingController();
 }
 
 class MyApp extends StatelessWidget {
@@ -30,8 +47,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  TextEditingController assetIdController = TextEditingController();
-  TextEditingController qrValueController = TextEditingController();
+  // TextEditingController assetIdController = TextEditingController();
+  // TextEditingController qrValueController = TextEditingController();
   String? latitude = '', longitude = '', altitude = '';
 
   @override
@@ -39,65 +56,78 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Demo Screen'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings),
+              onPressed: (){
+              Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const SettingScreen()));
+              }
+          )
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Align(
-                  alignment: Alignment.centerRight,
-                  child: ElevatedButton(
-                      onPressed: () {
-                        resetAll();
-                      },
-                      child: Text('Reset All'))),
-              TextField(
-                controller: assetIdController,
-                decoration: const InputDecoration(
-                  hintText: 'Asset Id',
-                ),
-              ),
-              const SizedBox(height: 10),
-              TextField(
-                controller: qrValueController,
-                decoration: const InputDecoration(
-                  hintText: 'Scanned QR value',
-                ),
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  _startScanner();
-                },
-                child: const Text('QR CODE DATA'),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              if (latitude == '' && longitude == '')
-                const Text(
-                    'Click on the Fetch location button to get Geolocation'),
-              ElevatedButton(
-                onPressed: () {
-                  locationPermission();
-                },
-                child: const Text('Fetch GeoLocation'),
-              ),
-              if (latitude != '') Text('Latitude: $latitude'),
-              if (longitude != '') Text('Longitude: $longitude'),
-              SizedBox(
-                height: 30,
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  submit();
-                },
-                child: const Text('Submit'),
-              ),
-            ],
+          child: Consumer<SettingScreenProvider>(
+            builder: (context, textFieldProvider, _) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Align(
+                      alignment: Alignment.centerRight,
+                      child: ElevatedButton(
+                          onPressed: () {
+                            resetAll();
+                          },
+                          child: Text('Reset All'))),
+                  TextField(
+                    controller: textFieldProvider.assetIdController,
+                    decoration: const InputDecoration(
+                      hintText: 'Asset Id',
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  TextField(
+                    controller: textFieldProvider.qrValueController,
+                    decoration: const InputDecoration(
+                      hintText: 'Scanned QR value',
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      _startScanner();
+                    },
+                    child: const Text('QR CODE DATA'),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  if (latitude == '' && longitude == '')
+                    const Text(
+                        'Click on the Fetch location button to get Geolocation'),
+                  ElevatedButton(
+                    onPressed: () {
+                      locationPermission();
+                    },
+                    child: const Text('Fetch GeoLocation'),
+                  ),
+                  if (latitude != '') Text('Latitude: $latitude'),
+                  if (longitude != '') Text('Longitude: $longitude'),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      submit();
+                    },
+                    child: const Text('Submit'),
+                  ),
+                ],
+              );
+            }
           ),
         ),
       ),
@@ -113,9 +143,9 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  onQrAdded(String qrValue) {
+  onQrAdded(String qrValue, SettingScreenProvider textFieldProvider) {
     setState(() {
-      qrValueController.text = qrValue;
+      textFieldProvider.qrValueController.text = qrValue;
     });
   }
 
@@ -181,16 +211,16 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {});
   }
 
-  resetAll() {
-    assetIdController.clear();
-    qrValueController.clear();
+  resetAll(SettingScreenProvider textFieldProvider) {
+    textFieldProvider.assetIdController.clear();
+    textFieldProvider.qrValueController.clear();
     latitude = '';
     longitude = '';
     altitude = '';
     setState(() {});
   }
 
-  submit() async {
+  submit(SettingScreenProvider textFieldProvider) async {
   var payload = {
       "ProjectId": "xyz",
       "ProjectCode": "string",
@@ -200,8 +230,8 @@ class _MyHomePageState extends State<MyHomePage> {
       "data": [
         {
           "attributes": {
-            "assetId": assetIdController.text.toString(),
-            "qrCode": qrValueController.text.toString()
+            "assetId": textFieldProvider.assetIdController.text.toString(),
+            "qrCode": textFieldProvider.qrValueController.text.toString()
           },
           "coordinates": [
             {"x": longitude, "y": latitude, "z": altitude}
