@@ -23,6 +23,8 @@ class _FormScreenState extends State<FormScreen> {
   TextEditingController altitudeController = TextEditingController();
   String? latitude = '', longitude = '', altitude = '';
 
+  SettingScreenProvider textFieldProvider = SettingScreenProvider();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,11 +51,11 @@ class _FormScreenState extends State<FormScreen> {
                   alignment: Alignment.centerRight,
                   child: ElevatedButton(
                       onPressed: () {
-                        resetAll();
+                        resetAll(textFieldProvider: textFieldProvider);
                       },
                       child: const Text('Reset All'))),
               TextField(
-                controller: assetIdController,
+                controller: textFieldProvider.assetIdController,
                 decoration: const InputDecoration(
                   label: Text("AssetId"),
                   hintText: 'Asset Id',
@@ -61,7 +63,7 @@ class _FormScreenState extends State<FormScreen> {
               ),
               const SizedBox(height: 10),
               TextField(
-                controller: qrValueController,
+                controller: textFieldProvider.qrValueController,
                 decoration:  InputDecoration(
                   label: const Text("QR Code"),
                   hintText: 'Scanned QR value',
@@ -128,7 +130,7 @@ class _FormScreenState extends State<FormScreen> {
 
   onQrAdded(String qrValue) {
     setState(() {
-      qrValueController.text = qrValue;
+      textFieldProvider.qrValueController.text = qrValue;
     });
   }
 
@@ -208,7 +210,7 @@ class _FormScreenState extends State<FormScreen> {
       "ProjectId": "xyz",
       "ProjectCode": "string",
       "FeatureID": "string",
-      "IsChainageBasis": "true",
+      "IsChainageBasis": false,
       "CompanyId": "string",
       "data": [
         {
@@ -275,13 +277,13 @@ class _FormScreenState extends State<FormScreen> {
             title: Text(messageTitle),
             // content: Text(messageValue),
             actions: <Widget>[
-              MaterialButton(
-                child: const Text("OK"),
-                onPressed: () async {
-                  Navigator.pop(context);
-                  Geolocator.openLocationSettings();
-                },
-              ),
+              // MaterialButton(
+              //   child: const Text("OK"),
+              //   onPressed: () async {
+              //     Navigator.pop(context);
+              //     Geolocator.openLocationSettings();
+              //   },
+              // ),
               MaterialButton(
                 child: const Text("CANCEL"),
                 onPressed: () async {
