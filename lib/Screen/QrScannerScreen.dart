@@ -24,24 +24,47 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
     super.dispose();
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('SCAN QR CODE'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, size: 24, color: Colors.black),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      ),
-      body: QRView(
-        key: qrKey,
-        onQRViewCreated: _onQRViewCreated,
+          shadowColor: Colors.transparent,
+          elevation: 0.0,
+          title: const Text(
+            "SCAN QR CODE",
+          ),
+          leading: IconButton(
+              icon: const Icon(Icons.arrow_back, size: 24, color: Colors.black),
+              onPressed: () {
+                Navigator.of(context).pop();
+              }),
+          ),
+      body: Column(
+        children: [
+          Expanded(
+            flex: 5,
+            child: _buildQrView(context),
+          ),
+        ],
       ),
     );
   }
+
+
+  Widget _buildQrView(BuildContext context) {
+    var scanArea = (MediaQuery.of(context).size.width < 400 ||
+        MediaQuery.of(context).size.height < 400)
+        ? 250.0
+        : 300.0;
+    return QRView(
+      key: qrKey,
+      onQRViewCreated: _onQRViewCreated,
+      overlay: QrScannerOverlayShape(
+          borderLength: 0, borderWidth: 0, cutOutSize: scanArea),
+    );
+  }
+
 
  bool qrCode=false;
   void _onQRViewCreated(QRViewController controller) {
