@@ -12,7 +12,8 @@ class SettingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SettingScreenProvider textFieldProvider = SettingScreenProvider();
-    String initialIsChainageBasisValue = "true";
+    String initialIsChainageBasisValue = "false";
+    String assetTypeProduct = "pipe";
     return Scaffold(
       appBar: AppBar(
         title: const Text('Setting Screen'),
@@ -25,21 +26,24 @@ class SettingScreen extends StatelessWidget {
               TextField(
                 controller: Provider.of<SettingScreenProvider>(context).projectIdController,
                 decoration: const InputDecoration(
-                  hintText: 'ProjectId',
+                  hintText: 'Assets',
+                  labelText: 'ProjectId'
                 ),
               ),
               const SizedBox(height: 10),
               TextField(
                 controller: Provider.of<SettingScreenProvider>(context).projectCodeController,
                 decoration: const InputDecoration(
-                  hintText: 'ProjectCode',
+                  hintText: 'Yard',
+                  labelText: 'ProjectCode'
                 ),
               ),
               const SizedBox(height: 10),
               TextField(
                 controller: Provider.of<SettingScreenProvider>(context).featureIDController,
                 decoration: const InputDecoration(
-                  hintText: 'FeatureID',
+                  hintText: '0',
+                    labelText: 'FeatureID'
                 ),
               ),
               const SizedBox(height: 10),
@@ -55,14 +59,47 @@ class SettingScreen extends StatelessWidget {
               );
             }).toList(),
             decoration: const InputDecoration(
-              hintText: 'IsChainageBasis',
+              hintText: 'false',
+              labelText: 'IsChainageBasis'
             ),
           ),
               const SizedBox(height: 10),
               TextField(
                 controller: Provider.of<SettingScreenProvider>(context).companyIdController,
                 decoration: const InputDecoration(
-                  hintText: 'CompanyId',
+                  hintText: 'ADNOC',
+                  labelText: 'CompanyId'
+                ),
+              ),
+              const SizedBox(height: 10),
+              TextField(
+                controller: Provider.of<SettingScreenProvider>(context).quantityController,
+                decoration: const InputDecoration(
+                  labelText: 'Quantity'
+                ),
+              ),
+              const SizedBox(height: 10),
+              TextField(
+                controller: Provider.of<SettingScreenProvider>(context).remarksController,
+                decoration: const InputDecoration(
+                  labelText: 'Remarks'
+                ),
+              ),
+              const SizedBox(height: 10),
+              DropdownButtonFormField<String>(
+                value: assetTypeProduct,
+                onChanged: (newValue) {
+                  textFieldProvider.assetTypeController.text = newValue!;
+                  // assetTypeProduct = newValue!;
+                },
+                items: ["pipe", "tee", "flange", "valves", "reducer", "elbow"].map((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                decoration: const InputDecoration(
+                  labelText: 'Asset Type'
                 ),
               ),
               const SizedBox(
@@ -94,6 +131,15 @@ class SettingScreen extends StatelessWidget {
     );
     Provider.of<SettingScreenProvider>(context, listen: false).setCompanyId(
       Provider.of<SettingScreenProvider>(context, listen: false).companyIdController.text,
+    );
+    Provider.of<SettingScreenProvider>(context, listen: false).setQuantity(
+      Provider.of<SettingScreenProvider>(context, listen: false).quantityController.text,
+    );
+    Provider.of<SettingScreenProvider>(context, listen: false).setRemarkValue(
+      Provider.of<SettingScreenProvider>(context, listen: false).remarksController.text,
+    );
+    Provider.of<SettingScreenProvider>(context, listen: false).setAssetTypeValue(
+      Provider.of<SettingScreenProvider>(context, listen: false).assetTypeController.text,
     );
   }
 }

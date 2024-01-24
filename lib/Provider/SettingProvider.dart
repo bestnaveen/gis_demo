@@ -8,6 +8,9 @@ class SettingScreenProvider with ChangeNotifier {
   TextEditingController featureIDController = TextEditingController();
   TextEditingController isChainageBasisController = TextEditingController();
   TextEditingController companyIdController = TextEditingController();
+  TextEditingController quantityController = TextEditingController();
+  TextEditingController remarksController = TextEditingController();
+  TextEditingController assetTypeController = TextEditingController();
 
 
   void setProjectId(String value) {
@@ -35,4 +38,18 @@ class SettingScreenProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void setQuantity(String value) {
+    quantityController.text = value;
+    notifyListeners();
+  }
+
+  void setRemarkValue(String value) {
+    remarksController.text = value;
+    notifyListeners();
+  }
+
+  void setAssetTypeValue(String value) {
+    assetTypeController.text = value;
+    notifyListeners();
+  }
 }

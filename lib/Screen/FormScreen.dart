@@ -65,7 +65,7 @@ class _FormScreenState extends State<FormScreen> {
               TextField(
                 controller: textFieldProvider.qrValueController,
                 decoration:  InputDecoration(
-                  label: const Text("QR Code"),
+                  label: const Text("Tag No."),
                   hintText: 'Scanned QR value',
                   suffixIcon: IconButton(onPressed: (){
                     _startScanner();
