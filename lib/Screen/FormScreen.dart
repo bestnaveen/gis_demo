@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 import '../Provider/SettingProvider.dart';
 import 'QrScannerScreen.dart';
@@ -22,6 +23,8 @@ class _FormScreenState extends State<FormScreen> {
   TextEditingController latitudeController = TextEditingController();
   TextEditingController altitudeController = TextEditingController();
   String? latitude = '', longitude = '', altitude = '';
+
+  String assetTypeProduct = "pipe";
 
   SettingScreenProvider textFieldProvider = SettingScreenProvider();
 
@@ -54,6 +57,56 @@ class _FormScreenState extends State<FormScreen> {
                         resetAll(textFieldProvider: textFieldProvider);
                       },
                       child: const Text('Reset All'))),
+
+              TextField(
+                controller: textFieldProvider.qrValueController,
+                decoration:  InputDecoration(
+                  labelText: "Tag No.",
+                  hintText: 'Scanned QR value',
+                  suffixIcon: IconButton(onPressed: (){
+                    _startScanner();
+                  }, icon: const Icon(Icons.qr_code)),
+                ),
+              ),
+              const SizedBox(height: 10),
+              DropdownButtonFormField<String>(
+                value: assetTypeProduct,
+                onChanged: (newValue) {
+                  textFieldProvider.assetTypeController.text = newValue!;
+                  // assetTypeProduct = newValue!;
+                },
+                items: ["pipe", "tee", "flange", "valves", "reducer", "elbow"].map((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                decoration: const InputDecoration(
+                    labelText: 'Asset Type'
+                ),
+              ),
+              const SizedBox(height: 10),
+              TextField(
+                controller: Provider.of<SettingScreenProvider>(context).quantityController,
+                decoration: const InputDecoration(
+                    labelText: 'Quantity'
+                ),
+              ),
+              const SizedBox(height: 10),
+              TextField(
+                controller: Provider.of<SettingScreenProvider>(context).locationController,
+                decoration: const InputDecoration(
+                    labelText: 'Location'
+                ),
+              ),
+              const SizedBox(height: 10),
+              TextField(
+                controller: Provider.of<SettingScreenProvider>(context).remarksController,
+                decoration: const InputDecoration(
+                    labelText: 'Remarks'
+                ),
+              ),
+              const SizedBox(height: 10),
               TextField(
                 controller: textFieldProvider.assetIdController,
                 decoration: const InputDecoration(
@@ -61,39 +114,29 @@ class _FormScreenState extends State<FormScreen> {
                   hintText: 'Asset Id',
                 ),
               ),
-              const SizedBox(height: 10),
-              TextField(
-                controller: textFieldProvider.qrValueController,
-                decoration:  InputDecoration(
-                  label: const Text("Tag No."),
-                  hintText: 'Scanned QR value',
-                  suffixIcon: IconButton(onPressed: (){
-                    _startScanner();
-                  }, icon: const Icon(Icons.qr_code)),
-                ),
-              ),
               const SizedBox(height: 20),
               TextField(
                 controller: longitudeController,
                 decoration:  InputDecoration(
                   hintText: 'Geo Location',
-                  label: Text("Longitude"),
+                  label: const Text("Longitude"),
                   suffixIcon: IconButton(onPressed: (){
                     locationPermission();
-                  }, icon: Icon(Icons.place_outlined)),
+                  }, icon: const Icon(Icons.place_outlined)),
                 ),
               ),
               if(longitudeController.text!=''&& latitudeController.text!=''&& altitudeController.text!='')TextField(
                 controller: latitudeController,
                 decoration:  InputDecoration(
                   hintText: 'Scanned QR value',
-                  label: Text("Latitude"),
+                  label: const Text("Latitude"),
                   suffixIcon: IconButton(onPressed: (){
 
-                  }, icon: Icon(Icons.place_outlined)),
+                  }, icon: const Icon(Icons.place_outlined)),
                 ),
               ),
-              if(longitudeController.text!=''&& latitudeController.text!=''&& altitudeController.text!='') TextField(
+              if(longitudeController.text!=''&& latitudeController.text!=''&& altitudeController.text!='')
+                TextField(
                 controller: altitudeController,
                 decoration:  InputDecoration(
                   hintText: 'Scanned QR value',
@@ -157,6 +200,8 @@ class _FormScreenState extends State<FormScreen> {
     }
   }
 
+
+
   void showAlertDialog() {
     showDialog(
         context: context,
@@ -205,13 +250,14 @@ class _FormScreenState extends State<FormScreen> {
     setState(() {});
   }
 
+
   submit({SettingScreenProvider? textFieldProvider}) async {
     var payload = {
-      "ProjectId": "xyz",
-      "ProjectCode": "string",
-      "FeatureID": "string",
+      "ProjectId": "Assets",
+      "ProjectCode": "Yard",
+      "FeatureID": "0",
       "IsChainageBasis": false,
-      "CompanyId": "string",
+      "CompanyId": "ADNOC",
       "data": [
         {
           "attributes": {
@@ -224,6 +270,40 @@ class _FormScreenState extends State<FormScreen> {
         }
       ]
     };
+
+
+    String payloadString = jsonEncode(payload);
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Payload'),
+          content: SingleChildScrollView(
+            child: Text(payloadString),
+          ),
+          actions: <Widget>[
+            MaterialButton(
+              child: const Text("Submit"),
+              onPressed: () async {
+                Navigator.pop(context); // Close the payload dialog
+                await submitRequest(payload);
+              },
+            ),
+            MaterialButton(
+              child: const Text("Cancel"),
+              onPressed: () {
+                Navigator.pop(context); // Close the payload dialog
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+
+  submitRequest(dynamic payload) async {
     String url = 'https://entgissync.pipetrakit.com/api/GISSync/SyncObject';
     try {
       http.Response response = await http.post(
@@ -234,17 +314,10 @@ class _FormScreenState extends State<FormScreen> {
         },
       );
 
-      // Check the response status code
       if (response.statusCode == 200) {
         print("Request successful");
         print(response.body);
 
-        // await Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => SubmitPayloadScreen(jsonEncode(payload),jsonDecode(response.body)),
-        //   ),
-        // );
         showSuccessDialog(jsonDecode(response.body));
       } else {
         print("Request failed with status: ${response.statusCode}");
@@ -253,8 +326,11 @@ class _FormScreenState extends State<FormScreen> {
     } catch (e) {
       print("Error: $e");
     }
-
   }
+
+
+
+
 
   showSuccessDialog(dynamic res) {
     showDialog(
@@ -269,23 +345,14 @@ class _FormScreenState extends State<FormScreen> {
             res['Status']['MessageList'].isNotEmpty) {
           Map<String, dynamic> firstMessage = res['Status']['MessageList'][0];
           String messageTitle = firstMessage['MessageTitle'];
-          // String messageValue = firstMessage['MessageValue'];
           return AlertDialog(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30),
             ),
             title: Text(messageTitle),
-            // content: Text(messageValue),
             actions: <Widget>[
-              // MaterialButton(
-              //   child: const Text("OK"),
-              //   onPressed: () async {
-              //     Navigator.pop(context);
-              //     Geolocator.openLocationSettings();
-              //   },
-              // ),
               MaterialButton(
-                child: const Text("CANCEL"),
+                child: const Text("Cancel"),
                 onPressed: () async {
                   Navigator.pop(context);
                 },

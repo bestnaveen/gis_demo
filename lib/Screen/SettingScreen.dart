@@ -71,37 +71,6 @@ class SettingScreen extends StatelessWidget {
                   labelText: 'CompanyId'
                 ),
               ),
-              const SizedBox(height: 10),
-              TextField(
-                controller: Provider.of<SettingScreenProvider>(context).quantityController,
-                decoration: const InputDecoration(
-                  labelText: 'Quantity'
-                ),
-              ),
-              const SizedBox(height: 10),
-              TextField(
-                controller: Provider.of<SettingScreenProvider>(context).remarksController,
-                decoration: const InputDecoration(
-                  labelText: 'Remarks'
-                ),
-              ),
-              const SizedBox(height: 10),
-              DropdownButtonFormField<String>(
-                value: assetTypeProduct,
-                onChanged: (newValue) {
-                  textFieldProvider.assetTypeController.text = newValue!;
-                  // assetTypeProduct = newValue!;
-                },
-                items: ["pipe", "tee", "flange", "valves", "reducer", "elbow"].map((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-                decoration: const InputDecoration(
-                  labelText: 'Asset Type'
-                ),
-              ),
               const SizedBox(
                 height: 50,
               ),

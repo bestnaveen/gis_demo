@@ -11,6 +11,7 @@ class SettingScreenProvider with ChangeNotifier {
   TextEditingController quantityController = TextEditingController();
   TextEditingController remarksController = TextEditingController();
   TextEditingController assetTypeController = TextEditingController();
+  TextEditingController locationController = TextEditingController();
 
 
   void setProjectId(String value) {
