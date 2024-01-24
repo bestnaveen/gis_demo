@@ -27,7 +27,7 @@ class _FormScreenState extends State<FormScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Demo Screen'),
+        title: const Text('GIS SYNC DEMO'),
         actions: [
           IconButton(
               icon: const Icon(Icons.settings),
@@ -51,7 +51,7 @@ class _FormScreenState extends State<FormScreen> {
                       onPressed: () {
                         resetAll();
                       },
-                      child: Text('Reset All'))),
+                      child: const Text('Reset All'))),
               TextField(
                 controller: assetIdController,
                 decoration: const InputDecoration(
@@ -63,11 +63,11 @@ class _FormScreenState extends State<FormScreen> {
               TextField(
                 controller: qrValueController,
                 decoration:  InputDecoration(
-                  label: Text("QR Code"),
+                  label: const Text("QR Code"),
                   hintText: 'Scanned QR value',
                   suffixIcon: IconButton(onPressed: (){
                     _startScanner();
-                  }, icon: Icon(Icons.qr_code)),
+                  }, icon: const Icon(Icons.qr_code)),
                 ),
               ),
               const SizedBox(height: 20),
@@ -95,13 +95,13 @@ class _FormScreenState extends State<FormScreen> {
                 controller: altitudeController,
                 decoration:  InputDecoration(
                   hintText: 'Scanned QR value',
-                  label: Text("Altitude"),
+                  label: const Text("Altitude"),
                   suffixIcon: IconButton(onPressed: (){
-                  }, icon: Icon(Icons.place_outlined)),
+                  }, icon: const Icon(Icons.place_outlined)),
                 ),
               ),
 
-              SizedBox(
+              const SizedBox(
                 height: 50,
               ),
               ElevatedButton(
@@ -280,6 +280,12 @@ class _FormScreenState extends State<FormScreen> {
                 onPressed: () async {
                   Navigator.pop(context);
                   Geolocator.openLocationSettings();
+                },
+              ),
+              MaterialButton(
+                child: const Text("CANCEL"),
+                onPressed: () async {
+                  Navigator.pop(context);
                 },
               ),
             ],
