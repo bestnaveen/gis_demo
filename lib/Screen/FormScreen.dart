@@ -226,9 +226,9 @@ class _FormScreenState extends State<FormScreen> {
     try {
       http.Response response = await http.post(
         Uri.parse(url),
-        body: jsonEncode(payload),  // Encode the payload as JSON
+        body: jsonEncode(payload),
         headers: {
-          "Content-Type": "application/json", // Set content type to JSON
+          "Content-Type": "application/json",
         },
       );
 
@@ -254,16 +254,26 @@ class _FormScreenState extends State<FormScreen> {
 
   }
 
-  showSuccessDialog(dynamic res){
+  showSuccessDialog(dynamic res) {
     showDialog(
-        context: context,
-        builder: (context) {
+      context: context,
+      builder: (context) {
+        if (res != null &&
+            res is Map<String, dynamic> &&
+            res.containsKey('Status') &&
+            res['Status'] is Map<String, dynamic> &&
+            res['Status'].containsKey('MessageList') &&
+            res['Status']['MessageList'] is List<dynamic> &&
+            res['Status']['MessageList'].isNotEmpty) {
+          Map<String, dynamic> firstMessage = res['Status']['MessageList'][0];
+          String messageTitle = firstMessage['MessageTitle'];
+          // String messageValue = firstMessage['MessageValue'];
           return AlertDialog(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30),
             ),
-            title: const Text("Success!!"),
-            content:  Text(res),
+            title: Text(messageTitle),
+            // content: Text(messageValue),
             actions: <Widget>[
               MaterialButton(
                 child: const Text("OK"),
@@ -274,6 +284,25 @@ class _FormScreenState extends State<FormScreen> {
               ),
             ],
           );
-        });
+        } else {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30),
+            ),
+            title: const Text("Error"),
+            content: const Text("Invalid response format"),
+            actions: <Widget>[
+              MaterialButton(
+                child: const Text("OK"),
+                onPressed: () async {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          );
+        }
+      },
+    );
   }
+
 }

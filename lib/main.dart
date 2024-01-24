@@ -11,7 +11,7 @@ import 'package:poc_demo/Screen/SubmitPayloadScreen.dart';
 import 'Screen/QrScannerScreen.dart';
 
 void main() {
-  runApp(AppProvider());
+  runApp(const AppProvider());
 }
 
 
