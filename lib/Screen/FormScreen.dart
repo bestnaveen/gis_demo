@@ -59,6 +59,7 @@ class _FormScreenState extends State<FormScreen> {
                       child: const Text('Reset All'))),
 
               TextField(
+                readOnly: true,
                 controller: qrValueController,
                 decoration:  InputDecoration(
                   labelText: "Tag No.",
@@ -173,7 +174,7 @@ class _FormScreenState extends State<FormScreen> {
 
   onQrAdded(String qrValue) {
     setState(() {
-      textFieldProvider.qrValueController.text = qrValue;
+      qrValueController.text = qrValue;
     });
   }
 
