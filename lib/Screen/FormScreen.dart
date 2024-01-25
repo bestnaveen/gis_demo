@@ -18,7 +18,7 @@ class FormScreen extends StatefulWidget {
 
 class _FormScreenState extends State<FormScreen> {
   TextEditingController assetIdController = TextEditingController();
-  TextEditingController qrValueController = TextEditingController();
+  TextEditingController qrValueController = TextEditingController(text: '');
   TextEditingController longitudeController = TextEditingController();
   TextEditingController latitudeController = TextEditingController();
   TextEditingController altitudeController = TextEditingController();
@@ -27,6 +27,11 @@ class _FormScreenState extends State<FormScreen> {
   String assetTypeProduct = "pipe";
 
   SettingScreenProvider textFieldProvider = SettingScreenProvider();
+  @override
+  void initState() {
+   textFieldProvider = context.read<SettingScreenProvider>();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,8 +64,11 @@ class _FormScreenState extends State<FormScreen> {
                       child: const Text('Reset All'))),
 
               TextField(
+                onTap: (){
+                  _startScanner();
+                },
                 readOnly: true,
-                controller: qrValueController,
+                controller: textFieldProvider.qrValueController,
                 decoration:  InputDecoration(
                   labelText: "Tag No.",
                   hintText: 'Scanned QR value',
@@ -88,24 +96,33 @@ class _FormScreenState extends State<FormScreen> {
               ),
               const SizedBox(height: 10),
               TextField(
-                controller: Provider.of<SettingScreenProvider>(context).quantityController,
+                controller: textFieldProvider.quantityController,
                 decoration: const InputDecoration(
                     labelText: 'Quantity'
                 ),
+                onChanged: (value){
+                  textFieldProvider.setQuantity(value);
+                },
               ),
               const SizedBox(height: 10),
               TextField(
-                controller: Provider.of<SettingScreenProvider>(context).locationController,
+                controller: textFieldProvider.locationController,
                 decoration: const InputDecoration(
                     labelText: 'Location'
                 ),
+                onChanged: (value){
+                  textFieldProvider.setLocation(value);
+                },
               ),
               const SizedBox(height: 10),
               TextField(
-                controller: Provider.of<SettingScreenProvider>(context).remarksController,
+                controller: textFieldProvider.remarksController,
                 decoration: const InputDecoration(
                     labelText: 'Remarks'
                 ),
+                onChanged: (value){
+                  textFieldProvider.setRemarkValue(value);
+                },
               ),
               const SizedBox(height: 10),
               TextField(
@@ -248,11 +265,12 @@ class _FormScreenState extends State<FormScreen> {
     latitude = '';
     longitude = '';
     altitude = '';
+    textFieldProvider?.resetAll();
     setState(() {});
   }
 
 
-  submit({SettingScreenProvider? textFieldProvider}) async {
+  submit() async {
     var payload = {
       "ProjectId": "Assets",
       "ProjectCode": "Yard",
@@ -262,12 +280,12 @@ class _FormScreenState extends State<FormScreen> {
       "data": [
         {
           "attributes": {
-            "location": textFieldProvider?.locationController.text.toString(),
-            "assetId": assetIdController.text.toString(),
-            "qrCode": qrValueController.text.toString(),
-            "quantity": textFieldProvider?.quantityController.text.toString(),
-            "assetType": textFieldProvider?.assetTypeController.text.toString(),
-            "remarks": textFieldProvider?.remarksController.text.toString(),
+            "location": textFieldProvider.locationController.value.text.toString(),
+            "assetId": assetIdController.value.text.toString(),
+            "qrCode": qrValueController.value.text.toString(),
+            "quantity": textFieldProvider.quantityController.value.text.toString(),
+            "assetType": textFieldProvider.assetTypeController.value.text.toString(),
+            "remarks": textFieldProvider.remarksController.value.text.toString(),
           },
           "coordinates": [
             {"x": longitudeController.text, "y": latitudeController.text, "z": altitudeController.text}

@@ -1,56 +1,98 @@
 import 'package:flutter/cupertino.dart';
 
 class SettingScreenProvider with ChangeNotifier {
-  TextEditingController assetIdController = TextEditingController();
-  TextEditingController qrValueController = TextEditingController();
-  TextEditingController projectIdController = TextEditingController();
-  TextEditingController projectCodeController = TextEditingController();
-  TextEditingController featureIDController = TextEditingController();
-  TextEditingController isChainageBasisController = TextEditingController();
-  TextEditingController companyIdController = TextEditingController();
-  TextEditingController quantityController = TextEditingController();
-  TextEditingController remarksController = TextEditingController();
-  TextEditingController assetTypeController = TextEditingController();
-  TextEditingController locationController = TextEditingController();
+
+  final TextEditingController _projectIdController = TextEditingController();
+  TextEditingController get projectIdController => _projectIdController;
+
+  final TextEditingController _qrValueController = TextEditingController();
+  TextEditingController get qrValueController => _qrValueController;
+
+  final TextEditingController _assetIdController = TextEditingController();
+  TextEditingController get assetIdController => _assetIdController;
+
+  final TextEditingController _projectCodeController = TextEditingController();
+  TextEditingController get projectCodeController => _projectCodeController;
+
+  final TextEditingController _featureIDController = TextEditingController();
+  TextEditingController get featureIDController => _featureIDController;
+
+  final TextEditingController _isChangeBasisController = TextEditingController();
+  TextEditingController get isChangeBasisController => _isChangeBasisController;
+
+  final TextEditingController _companyIdController = TextEditingController();
+  TextEditingController get companyIdController => _companyIdController;
+
+  final TextEditingController _remarksController = TextEditingController();
+  TextEditingController get remarksController => _remarksController;
+
+  final TextEditingController _assetTypeController = TextEditingController();
+  TextEditingController get assetTypeController => _assetTypeController;
+
+  final TextEditingController _locationController = TextEditingController();
+  TextEditingController get locationController => _locationController;
+
+  final TextEditingController _quantityController = TextEditingController();
+  TextEditingController get quantityController => _quantityController;
+
+
+  List<String> _qrCodes = [];
+  List<String> get qrCodes => _qrCodes;
 
 
   void setProjectId(String value) {
-    projectIdController.text = value;
+    _projectIdController.text = value;
     notifyListeners();
   }
 
   void setProjectCode(String value) {
-    projectCodeController.text = value;
+    _projectCodeController.text = value;
     notifyListeners();
   }
 
   void setFeatureID(String value) {
-    featureIDController.text = value;
+    _featureIDController.text = value;
     notifyListeners();
   }
 
-  void setIsChainageBasis(String value) {
-    isChainageBasisController.text = value;
+  void setIsChangeBasis(String value) {
+    _isChangeBasisController.text = value;
     notifyListeners();
   }
 
   void setCompanyId(String value) {
-    companyIdController.text = value;
+    _companyIdController.text = value;
     notifyListeners();
   }
 
   void setQuantity(String value) {
-    quantityController.text = value;
+    _quantityController.text = value;
+    notifyListeners();
+  }
+
+  void setLocation(String value) {
+    _locationController.text = value;
     notifyListeners();
   }
 
   void setRemarkValue(String value) {
-    remarksController.text = value;
+    _remarksController.text = value;
     notifyListeners();
   }
 
   void setAssetTypeValue(String value) {
-    assetTypeController.text = value;
+    _assetTypeController.text = value;
     notifyListeners();
+  }
+
+  void resetAll(){
+    _assetIdController.clear();
+    _remarksController.clear();
+    _quantityController.clear();
+    _companyIdController.clear();
+    _isChangeBasisController.clear();
+    _featureIDController.clear();
+    _projectCodeController.clear();
+    _projectIdController.clear();
   }
 }
