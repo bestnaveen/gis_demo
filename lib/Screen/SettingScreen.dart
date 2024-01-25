@@ -75,7 +75,9 @@ class SettingScreen extends StatelessWidget {
                 height: 50,
               ),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+               Navigator.pop(context);
+                },
                 child: const Text('SET DATA'),
               ),
             ],

@@ -59,7 +59,7 @@ class _FormScreenState extends State<FormScreen> {
                       child: const Text('Reset All'))),
 
               TextField(
-                controller: textFieldProvider.qrValueController,
+                controller: qrValueController,
                 decoration:  InputDecoration(
                   labelText: "Tag No.",
                   hintText: 'Scanned QR value',
@@ -108,7 +108,7 @@ class _FormScreenState extends State<FormScreen> {
               ),
               const SizedBox(height: 10),
               TextField(
-                controller: textFieldProvider.assetIdController,
+                controller: assetIdController,
                 decoration: const InputDecoration(
                   label: Text("AssetId"),
                   hintText: 'Asset Id',
@@ -242,8 +242,8 @@ class _FormScreenState extends State<FormScreen> {
   }
 
   resetAll({SettingScreenProvider? textFieldProvider}) {
-    textFieldProvider?.assetIdController.clear();
-    textFieldProvider?.qrValueController.clear();
+    assetIdController.clear();
+    qrValueController.clear();
     latitude = '';
     longitude = '';
     altitude = '';
@@ -261,11 +261,11 @@ class _FormScreenState extends State<FormScreen> {
       "data": [
         {
           "attributes": {
-            "assetId": textFieldProvider?.assetIdController.text.toString(),
-            "qrCode": textFieldProvider?.qrValueController.text.toString()
+            "assetId": assetIdController.text.toString(),
+            "qrCode": qrValueController.text.toString()
           },
           "coordinates": [
-            {"x": longitude, "y": latitude, "z": altitude}
+            {"x": longitudeController.text, "y": latitudeController.text, "z": altitudeController.text}
           ]
         }
       ]
@@ -317,7 +317,6 @@ class _FormScreenState extends State<FormScreen> {
       if (response.statusCode == 200) {
         print("Request successful");
         print(response.body);
-
         showSuccessDialog(jsonDecode(response.body));
       } else {
         print("Request failed with status: ${response.statusCode}");
