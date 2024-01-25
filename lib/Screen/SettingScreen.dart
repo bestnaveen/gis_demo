@@ -50,7 +50,7 @@ class SettingScreen extends StatelessWidget {
           DropdownButtonFormField<String>(
             value: initialIsChainageBasisValue,
             onChanged: (newValue) {
-              textFieldProvider.isChainageBasisController.text = newValue!;
+              textFieldProvider.isChangeBasisController.text = newValue!;
             },
             items: ["true", "false"].map((String value) {
               return DropdownMenuItem<String>(
@@ -97,8 +97,8 @@ class SettingScreen extends StatelessWidget {
     Provider.of<SettingScreenProvider>(context, listen: false).setFeatureID(
       Provider.of<SettingScreenProvider>(context, listen: false).featureIDController.text,
     );
-    Provider.of<SettingScreenProvider>(context, listen: false).setIsChainageBasis(
-      Provider.of<SettingScreenProvider>(context, listen: false).isChainageBasisController.text,
+    Provider.of<SettingScreenProvider>(context, listen: false).setIsChangeBasis(
+      Provider.of<SettingScreenProvider>(context, listen: false).isChangeBasisController.text,
     );
     Provider.of<SettingScreenProvider>(context, listen: false).setCompanyId(
       Provider.of<SettingScreenProvider>(context, listen: false).companyIdController.text,
