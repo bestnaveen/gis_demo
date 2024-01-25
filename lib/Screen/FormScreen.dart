@@ -265,9 +265,9 @@ class _FormScreenState extends State<FormScreen> {
             "location": textFieldProvider?.locationController.text.toString(),
             "assetId": assetIdController.text.toString(),
             "qrCode": qrValueController.text.toString(),
-            "Quantity": textFieldProvider?.quantityController.text.toString(),
-            "AssetType": textFieldProvider?.assetTypeController.text.toString(),
-            "Remarks": textFieldProvider?.remarksController.text.toString(),
+            "quantity": textFieldProvider?.quantityController.text.toString(),
+            "assetType": textFieldProvider?.assetTypeController.text.toString(),
+            "remarks": textFieldProvider?.remarksController.text.toString(),
           },
           "coordinates": [
             {"x": longitudeController.text, "y": latitudeController.text, "z": altitudeController.text}
