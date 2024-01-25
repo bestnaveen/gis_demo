@@ -259,6 +259,10 @@ class _FormScreenState extends State<FormScreen> {
       "FeatureID": "0",
       "IsChainageBasis": false,
       "CompanyId": "ADNOC",
+      "Quantity": "",
+      "Location": "",
+      "Asset Type": "",
+      "Remarks": "",
       "data": [
         {
           "attributes": {
