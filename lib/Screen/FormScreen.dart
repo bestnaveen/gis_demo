@@ -22,13 +22,8 @@ class _FormScreenState extends State<FormScreen> {
   TextEditingController longitudeController = TextEditingController();
   TextEditingController latitudeController = TextEditingController();
   TextEditingController altitudeController = TextEditingController();
+  String? latitude = '', longitude = '', altitude = '';
 
-   TextEditingController quantityController = TextEditingController();
-    TextEditingController remarksController = TextEditingController();
-    TextEditingController assetTypeController = TextEditingController();
-    TextEditingController locationController = TextEditingController();
-
-    String? latitude = '', longitude = '', altitude = '';
   String assetTypeProduct = "pipe";
 
   SettingScreenProvider textFieldProvider = SettingScreenProvider();
@@ -267,12 +262,12 @@ class _FormScreenState extends State<FormScreen> {
       "data": [
         {
           "attributes": {
+            "location": textFieldProvider?.locationController.text.toString(),
             "assetId": assetIdController.text.toString(),
             "qrCode": qrValueController.text.toString(),
-            "Quantity": quantityController.text.toString(),
-            "AssetType": assetTypeController.text.toString(),
-            "Remarks": remarksController.text.toString(),
-            "location": locationController.text.toString(),
+            "quantity": textFieldProvider?.quantityController.text.toString(),
+            "assetType": textFieldProvider?.assetTypeController.text.toString(),
+            "remarks": textFieldProvider?.remarksController.text.toString(),
           },
           "coordinates": [
             {"x": longitudeController.text, "y": latitudeController.text, "z": altitudeController.text}
