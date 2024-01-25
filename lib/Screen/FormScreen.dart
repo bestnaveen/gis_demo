@@ -18,7 +18,7 @@ class FormScreen extends StatefulWidget {
 
 class _FormScreenState extends State<FormScreen> {
   TextEditingController assetIdController = TextEditingController();
-  TextEditingController qrValueController = TextEditingController(text: '');
+  TextEditingController qrValueController = TextEditingController();
   TextEditingController longitudeController = TextEditingController();
   TextEditingController latitudeController = TextEditingController();
   TextEditingController altitudeController = TextEditingController();
@@ -68,7 +68,7 @@ class _FormScreenState extends State<FormScreen> {
                   _startScanner();
                 },
                 readOnly: true,
-                controller: textFieldProvider.qrValueController,
+                controller: qrValueController,
                 decoration:  InputDecoration(
                   labelText: "Tag No.",
                   hintText: 'Scanned QR value',
