@@ -78,6 +78,13 @@ class _FormScreenState extends State<FormScreen> {
                 ),
               ),
               const SizedBox(height: 10),
+              TextField(
+                controller: assetIdController,
+                decoration: const InputDecoration(
+                  label: Text("Asset Id"),
+                ),
+              ),
+              const SizedBox(height: 10),
               DropdownButtonFormField<String>(
                 value: assetTypeProduct,
                 onChanged: (newValue) {
@@ -97,6 +104,7 @@ class _FormScreenState extends State<FormScreen> {
               const SizedBox(height: 10),
               TextField(
                 controller: textFieldProvider.quantityController,
+                keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
                     labelText: 'Quantity'
                 ),
@@ -124,13 +132,27 @@ class _FormScreenState extends State<FormScreen> {
                   textFieldProvider.setRemarkValue(value);
                 },
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 20),
               TextField(
-                controller: assetIdController,
+                controller: textFieldProvider.itemReceivedController,
+                keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
-                  label: Text("AssetId"),
-                  hintText: 'Asset Id',
+                    labelText: 'Item Received'
                 ),
+                onChanged: (value){
+                  textFieldProvider.setItemReceivedValue(value);
+                },
+              ),
+              const SizedBox(height: 20),
+              TextField(
+                controller: textFieldProvider.itemDefectController,
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
+                    labelText: 'Item Defect'
+                ),
+                onChanged: (value){
+                  textFieldProvider.setItemDefectValue(value);
+                },
               ),
               const SizedBox(height: 20),
               TextField(
@@ -286,6 +308,8 @@ class _FormScreenState extends State<FormScreen> {
             "quantity": textFieldProvider.quantityController.value.text.toString(),
             "assetType": textFieldProvider.assetTypeController.value.text.toString(),
             "remarks": textFieldProvider.remarksController.value.text.toString(),
+            "ItemReceived": textFieldProvider.itemReceivedController.value.text.toString(),
+            "ItemDefect": textFieldProvider.itemDefectController.value.text.toString()
           },
           "coordinates": [
             {"x": longitudeController.text, "y": latitudeController.text, "z": altitudeController.text}
@@ -309,14 +333,14 @@ class _FormScreenState extends State<FormScreen> {
             MaterialButton(
               child: const Text("Submit"),
               onPressed: () async {
-                Navigator.pop(context); // Close the payload dialog
+                Navigator.pop(context);
                 await submitRequest(payload);
               },
             ),
             MaterialButton(
               child: const Text("Cancel"),
               onPressed: () {
-                Navigator.pop(context); // Close the payload dialog
+                Navigator.pop(context);
               },
             ),
           ],
@@ -386,8 +410,8 @@ class _FormScreenState extends State<FormScreen> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30),
             ),
-            title: const Text("Success"),
-            content: const Text("DATA IS SUBMITTED!!"),
+            title: const Text("SUCCESS!!"),
+            content: const Text("DATA IS SUBMITTED"),
             actions: <Widget>[
               MaterialButton(
                 child: const Text("OK"),

@@ -35,6 +35,12 @@ class SettingScreenProvider with ChangeNotifier {
   final TextEditingController _quantityController = TextEditingController();
   TextEditingController get quantityController => _quantityController;
 
+  final TextEditingController _itemReceivedController = TextEditingController();
+  TextEditingController get itemReceivedController => _itemReceivedController;
+
+  final TextEditingController _itemDefectController = TextEditingController();
+  TextEditingController get itemDefectController => _itemDefectController;
+
 
   List<String> _qrCodes = [];
   List<String> get qrCodes => _qrCodes;
@@ -85,6 +91,16 @@ class SettingScreenProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void setItemReceivedValue(String value) {
+    _itemReceivedController.text = value;
+    notifyListeners();
+  }
+
+  void setItemDefectValue(String value) {
+    _itemDefectController.text = value;
+    notifyListeners();
+  }
+
   void resetAll(){
     _assetIdController.clear();
     _remarksController.clear();
@@ -94,5 +110,7 @@ class SettingScreenProvider with ChangeNotifier {
     _featureIDController.clear();
     _projectCodeController.clear();
     _projectIdController.clear();
+    _itemReceivedController.clear();
+    _itemDefectController.clear();
   }
 }

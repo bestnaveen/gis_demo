@@ -112,6 +112,12 @@ class SettingScreen extends StatelessWidget {
     Provider.of<SettingScreenProvider>(context, listen: false).setAssetTypeValue(
       Provider.of<SettingScreenProvider>(context, listen: false).assetTypeController.text,
     );
+    Provider.of<SettingScreenProvider>(context, listen: false).setItemReceivedValue(
+      Provider.of<SettingScreenProvider>(context, listen: false).itemReceivedController.text,
+    );
+    Provider.of<SettingScreenProvider>(context, listen: false).setItemDefectValue(
+      Provider.of<SettingScreenProvider>(context, listen: false).itemDefectController.text,
+    );
   }
 }
 
