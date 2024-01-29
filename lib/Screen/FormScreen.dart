@@ -294,11 +294,11 @@ class _FormScreenState extends State<FormScreen> {
 
   submit() async {
     var payload = {
-      "ProjectId": "Assets",
-      "ProjectCode": "Yard",
-      "FeatureID": "0",
+      "ProjectId": textFieldProvider.projectIdController.value.text.toString(),
+      "ProjectCode": textFieldProvider.projectCodeController.value.text.toString(),
+      "FeatureID": textFieldProvider.featureIDController.value.text.toString(),
       "IsChainageBasis": false,
-      "CompanyId": "ADNOC",
+      "CompanyId": textFieldProvider.companyIdController.value.text.toString(),
       "data": [
         {
           "attributes": {
