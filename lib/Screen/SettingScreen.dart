@@ -27,7 +27,8 @@ class SettingScreen extends StatelessWidget {
                 controller: Provider.of<SettingScreenProvider>(context).projectIdController,
                 decoration: const InputDecoration(
                   hintText: 'Assets',
-                  labelText: 'ProjectId'
+                  labelText: 'ProjectId',
+                  floatingLabelBehavior: FloatingLabelBehavior.always
                 ),
               ),
               const SizedBox(height: 10),
@@ -35,7 +36,8 @@ class SettingScreen extends StatelessWidget {
                 controller: Provider.of<SettingScreenProvider>(context).projectCodeController,
                 decoration: const InputDecoration(
                   hintText: 'Yard',
-                  labelText: 'ProjectCode'
+                  labelText: 'ProjectCode',
+                  floatingLabelBehavior: FloatingLabelBehavior.always
                 ),
               ),
               const SizedBox(height: 10),
@@ -43,7 +45,8 @@ class SettingScreen extends StatelessWidget {
                 controller: Provider.of<SettingScreenProvider>(context).featureIDController,
                 decoration: const InputDecoration(
                   hintText: '0',
-                    labelText: 'FeatureID'
+                    labelText: 'FeatureID',
+                  floatingLabelBehavior: FloatingLabelBehavior.always
                 ),
               ),
               const SizedBox(height: 10),
@@ -68,7 +71,8 @@ class SettingScreen extends StatelessWidget {
                 controller: Provider.of<SettingScreenProvider>(context).companyIdController,
                 decoration: const InputDecoration(
                   hintText: 'ADNOC',
-                  labelText: 'CompanyId'
+                  labelText: 'CompanyId',
+                  floatingLabelBehavior: FloatingLabelBehavior.always
                 ),
               ),
               const SizedBox(

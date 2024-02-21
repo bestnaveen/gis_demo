@@ -41,17 +41,19 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+    	<string>Allow GIS Demo App to access your device camera to capture photos and QR codes, which will be used to enhance your experience within the app. We do not store or share your media without your explicit consent</string>
+    	<key>NSLocalNetworkUsageDescription</key>
+            	<string>This app uses local network access to connect with printers on the same Wi-Fi network. It enables you to print inventory items directly from your device, making printing tasks more convenient and efficient.</string>
+            	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+            	<string>GIS Demo App wants to access your location. We use your location only to tag your items to your inventory space.</string>
+            	<key>NSLocationAlwaysUsageDescription</key>
+            	<string>GIS Demo App wants to access your location. We use your location only to tag your items to your inventory space.</string>
+            	<key>NSLocationWhenInUseUsageDescription</key>
+            	<string>GIS Demo App wants to access your location. We use your location only to tag your items to your inventory space.</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
-	<key>NSLocalNetworkUsageDescription</key>
-    	<string>This app uses local network access to connect with printers on the same Wi-Fi network. It enables you to print inventory items directly from your device, making printing tasks more convenient and efficient.</string>
-    	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-    	<string>&quot;Stack61&quot; wants to access your location. We use your location only to tag your items to your inventory space.</string>
-    	<key>NSLocationAlwaysUsageDescription</key>
-    	<string>&quot;Stack61&quot; wants to access your location. We use your location only to tag your items to your inventory space.</string>
-    	<key>NSLocationWhenInUseUsageDescription</key>
-    	<string>&quot;Stack61&quot; wants to access your location. We use your location only to tag your items to your inventory space.</string>
-</dict>
+	</dict>
 </plist>
